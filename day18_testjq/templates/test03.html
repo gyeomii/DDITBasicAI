@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+function myclick(){
+	var a = $("#mya").val();
+	var b = $("#myb").val();
+	var aa = parseInt(a);
+	var bb = parseInt(b);
+	$("#myc").val(aa+bb);
+}
+$(document).ready(function(){
+	$('#btn').bind("click" , myclick);
+});
+
+</script>
+
+</head>
+<body>
+<input type="text" style="width: 20px;" id="mya" value="1" >
++
+<input type="text" style="width: 20px;" id="myb" value="2" >
+<input type="button" value="=" id="btn" />
+<input type="text" style="width: 20px;" id="myc" value="" >
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+function myclick(){
+
+	var mine = $("#txt_mine").val();
+	var com = "";
+	var result = "";
+	
+	var rnd = Math.random();
+	if(rnd > 0.66){
+		com = "가위";
+	}else if(rnd > 0.33){
+		com = "바위";
+	}else{
+		com = "보";
+	}
+	
+	if(com == "가위" && mine == "가위")	result = "비김";
+	if(com == "가위" && mine == "바위")	result = "이김";
+	if(com == "가위" && mine == "보")		result = "짐";
+		
+	if(com == "바위" && mine == "가위")	result = "짐";
+	if(com == "바위" && mine == "바위")	result = "비김";
+	if(com == "바위" && mine == "보")		result = "이김";
+	
+	if(com == "보" && mine == "가위")		result = "이김";
+	if(com == "보" && mine == "바위")		result = "짐";
+	if(com == "보" && mine == "보")		result = "비김";
+	
+	$("#txt_com").val(com);
+	$("#txt_result").val(result);
+
+}
+
+
+$(document).ready(function(){
+	$('#btn').bind("click" , myclick);
+});
+</script>
+
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td>나:</td>
+		<td>
+			<input type="text" style="width: 40px" id="txt_mine" />
+		</td>
+	</tr>
+	<tr>
+		<td>컴:</td>
+		<td>
+			<input type="text" style="width: 40px" id="txt_com" />
+		</td>
+	</tr>
+	<tr>
+		<td>결과:</td>
+		<td>
+			<input type="text" style="width: 40px" id="txt_result" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" >
+			<input type="button" value="게임하기" id="btn"  />
+		</td>
+	</tr>
+
+</table>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function mydouble(){
+	var obj = document.getElementById("mytxt");
+	var a = obj.value;
+	var aa = parseInt(a)*2;
+	obj.value = aa;
+}
+
+</script>
+
+</head>
+<body>
+<input type="text" id="mytxt" value="100" >
+<input type="button" value="double" onclick="mydouble()" />
+
+</body>
+</html>

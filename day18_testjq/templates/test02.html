@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+function mydouble(){
+	var a = $("#mytxt").val();
+	var aa = parseInt(a)*2;
+	$("#mytxt").val(aa);
+}
+
+$(document).ready(function(){
+// 	$("#btn").click(mydouble);
+	$('#btn').bind("click" , mydouble);
+});
+
+</script>
+
+</head>
+<body>
+<input type="text" id="mytxt" value="100" >
+<input type="button" value="double" id="btn" />
+
+</body>
+</html>

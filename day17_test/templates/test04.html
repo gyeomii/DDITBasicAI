@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function myclick(){
+    var arr45 = [
+        "1","2","3","4","5",        "6","7","8","9","10",
+        "11","12","13","14","15",    "16","17","18","19","20",
+        "21","22","23","24","25",    "26","27","28","29","30",
+        "31","32","33","34","35",    "36","37","38","39","40",
+        "41","42","43","44","45"
+    ];
+    console.log(Math.random());
+    for(var i=0;i<100;i++){
+    	var rnd = parseInt(Math.random()*45);
+	     a = arr45[rnd]
+	     b = arr45[0]
+	     arr45[0] = a
+	     arr45[rnd] = b
+    }
+    
+    console.log(arr45);
+    
+    var mytxts = document.getElementsByClassName("mytxt");
+    mytxts[0].value = arr45[0];
+    mytxts[1].value = arr45[1];
+    mytxts[2].value = arr45[2];
+    mytxts[3].value = arr45[3];
+    mytxts[4].value = arr45[4];
+    mytxts[5].value = arr45[5];
+
+	
+}
+
+</script>
+
+</head>
+<body>
+<input type="text" style="width: 20px;" class="mytxt" value="__" >
+<input type="text" style="width: 20px;" class="mytxt" value="__" >
+<input type="text" style="width: 20px;" class="mytxt" value="__" >
+<input type="text" style="width: 20px;" class="mytxt" value="__" >
+<input type="text" style="width: 20px;" class="mytxt" value="__" >
+<input type="text" style="width: 20px;" class="mytxt" value="__" >
+
+<input type="button" value="lotto" onclick="myclick()" />
+
+</body>
+</html>

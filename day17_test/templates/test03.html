@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function myclick(){
+	var a = document.getElementById("mya").value;
+	var b = document.getElementById("myb").value;
+	var aa = parseInt(a);
+	var bb = parseInt(b);
+	
+	document.getElementById("myc").value  = aa+bb;
+	
+}
+
+</script>
+
+</head>
+<body>
+<input type="text" style="width: 20px;" id="mya" value="1" >
++
+<input type="text" style="width: 20px;" id="myb" value="2" >
+<input type="button" value="=" onclick="myclick()" />
+<input type="text" style="width: 20px;" id="myc" value="" >
+
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+table {
+	border-collapse: collapse;
+}
+.mytd {
+	text-align:center;
+	background-image:url(0.png);
+	width: 40px;
+	height: 40px;
+}
+</style>
+<script src="jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+var count = 1;
+var flaEnd = false;
+var flagWb = true;
+var arr2D = [
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0],
+	[0,0,0,0,0,	0,0,0,0,0, 0,0,0,0,0,	0,0,0,0,0]
+
+];
+function myreset(){
+	
+	var tds = document.getElementsByClassName("mytd");
+	for(var i=0;i<arr2D.length;i++){
+		for(var j=0;j<arr2D[i].length;j++){
+			arr2D[i][j]=0;
+			tds[i*20+j].innerHTML="";
+		}
+	}
+	myrender();
+	flaEnd = false;
+	flagWb = true;
+	count = 1;
+}
+
+function myinit(){
+	var tds = document.getElementsByClassName("mytd");
+	for(var i=0;i<arr2D.length;i++){
+		for(var j=0;j<arr2D[i].length;j++){
+			tds[i*20+j].title=i+","+j;
+		}
+	}
+}
+
+function myclick(){
+	if(flaEnd){
+		return;
+	}
+	var i = 0;
+	var j = 0;
+	//-------------------------------------------------------------------------------
+	var str400 = arr2D+"";
+	str400 = str400.replace(/,/g,"");
+	console.log(str400);
+	var stone = -1;
+	if(flagWb){
+		stone = 1;
+	}else{
+		stone = 2;
+	}
+	
+	var s1 = document.querySelector("#s1");
+	var s2 = document.querySelector("#s2");
+	
+	var ip = "";
+	if(flagWb){
+		ip = s1.value;
+	}else{
+		ip = s2.value;
+	}
+	var myurl = "http://"+ip+":5001/ajax"
+	console.log("myurl",myurl);
+	
+	var param = "";
+	param += "dummy=" + Math.random();
+	param += "&stone="+stone;
+	param += "&data400="+str400;
+	$.ajax({
+		url : myurl,
+		data : param,
+		dataType : "json",
+		type : "post",
+		async: false,
+		success : function(res) {
+			console.log(res.i);
+			console.log(res.j);
+			i = parseInt(res.i);
+			j = parseInt(res.j);
+		}
+	});
+	//-------------------------------------------------------------------------------
+	
+	console.log("i",i);
+	console.log("j",j);
+	
+	
+	if(arr2D[i][j]>0){
+		return;
+	}
+	
+	var tds = document.querySelectorAll(".mytd");
+
+	if(flagWb){
+		arr2D[i][j] = 1;
+		tds[20*i+j].innerHTML = "<font color='black' >"+count+"</font>";
+	}else{
+		arr2D[i][j] = 2;
+		tds[20*i+j].innerHTML = "<font color='white' >"+count+"</font>";
+	}
+	count++;
+	
+	var up = checkUP(i,j,stone);
+	var dw = checkDW(i,j,stone);
+	var ri = checkRI(i,j,stone);
+	var le = checkLE(i,j,stone);
+	var ul = checkUL(i,j,stone);
+	var ur = checkUR(i,j,stone);
+	var dl = checkDL(i,j,stone);
+	var dr = checkDR(i,j,stone);
+	
+	console.log("dw",dw);
+	console.log("dw",dw);
+	console.log("ri",ri);
+	console.log("le",le);
+	console.log("ul",ul);
+	console.log("ur",ur);
+	console.log("dl",dl);
+	console.log("dr",dr);
+	
+	var d1 = ri+le+1;
+	var d2 = ul+dr+1;
+	var d3 = dw+up+1;
+	var d4 = dl+ur+1;
+	
+	
+	myrender();
+	if(d1==5||d2==5||d3==5||d4==5){
+		
+		if(flagWb){
+			setTimeout("alert('흰돌승리')", 1);
+		}else{
+			setTimeout("alert('흑돌승리')", 1);
+		}
+		flaEnd = true;
+	}
+	
+	
+	
+	
+	flagWb = !flagWb;
+}
+
+function checkDR(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 i++;
+			 j++;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+function checkDL(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 i++;
+			 j--;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+
+function checkUR(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 i--;
+			 j++;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+
+function checkUL(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 i--;
+			 j--;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+
+function checkRI(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 j++;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+function checkLE(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 j--;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+function checkDW(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 i++;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+function checkUP(i,j,stone){
+	 var cnt = 0;
+	 try{
+		 while(true){
+			 i--;
+			 if(arr2D[i][j]==stone){
+				 cnt++;
+			 }else{
+				 return cnt;
+			 }
+		 }		 
+	 }catch(err){
+		 return cnt;
+	 }	 
+}
+
+
+function myrender(){
+	var tds = document.getElementsByClassName("mytd");
+	for(var i=0;i<arr2D.length;i++){
+		for(var j=0;j<arr2D[i].length;j++){
+			if(arr2D[i][j]==0){
+				tds[i*20+j].style.backgroundImage="url('0.png')";
+			}
+			if(arr2D[i][j]==1){
+				tds[i*20+j].style.backgroundImage="url('1.png')";
+			}
+			if(arr2D[i][j]==2){
+				tds[i*20+j].style.backgroundImage="url('2.png')";
+			}
+
+		}
+		
+	}
+}
+
+</script>
+
+</head>
+<body onload="myinit()">
+
+<table border="1px">
+	<tr>
+		<td>S1</td>
+		<td><input type="text" id="s1" value="192.168.141.34" /></td>
+		<td rowspan="2" ><input type="button" value="start" onclick="myclick()" /></td>
+		<td rowspan="2" ><input type="button" value="reset" onclick="myreset()" /></td>
+	</tr>
+	<tr>
+		<td>S2</td>
+		<td><input type="text" id="s2" value="192.168.141.33" /></td>
+	</tr>
+	
+</table>
+
+<table>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+	<tr>	
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+		<td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" /><td class="mytd" />
+	</tr>
+
+
+</table>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

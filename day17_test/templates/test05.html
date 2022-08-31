@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+function myclick(){
+	
+	var objMine = document.querySelector("#txtMine");   
+	var objCom = document.querySelector("#txtCom");   
+	var objResult = document.querySelector("#txtResult");   
+	
+	var mine = objMine.value;
+	var com = "";
+	var result = "";
+	
+	var rnd = Math.random();
+	if(rnd > 0.5){
+		com = "홀";
+	}else{
+		com = "짝";
+	}
+	
+	if(com == mine){
+		result = "이김";
+	} else {
+		result = "짐";
+	}
+	
+	objCom.value = com;
+	objResult.value = result;
+	
+}
+
+</script>
+
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td>나:</td>
+		<td>
+			<input type="text" style="width: 40px" id="txtMine" />
+		</td>
+	</tr>
+	<tr>
+		<td>컴:</td>
+		<td>
+			<input type="text" style="width: 40px" id="txtCom" />
+		</td>
+	</tr>
+	<tr>
+		<td>결과:</td>
+		<td>
+			<input type="text" style="width: 40px" id="txtResult" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" >
+			<input type="button" value="게임하기" onclick="myclick()"  />
+		</td>
+	</tr>
+
+</table>
+</body>
+</html>

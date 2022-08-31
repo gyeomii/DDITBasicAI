@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+table {
+	border-collapse: collapse;
+}
+</style>
+<script src="jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+var flagWb = true;
+function myclick(obj){
+	if(flagWb){
+		obj.style.backgroundImage="url('1.png')";
+	}else{
+		obj.style.backgroundImage="url('2.png')";
+	}
+	flagWb =! flagWb;
+}
+
+</script>
+
+</head>
+<body>
+
+<table>
+	<tr>	
+		<td style="background-image:url(0.png);width: 40px;height: 40px;" onclick="myclick(this)" ></td>
+		<td style="background-image:url(0.png);width: 40px;height: 40px;" onclick="myclick(this)" ></td>
+	</tr>
+	<tr>	
+		<td style="background-image:url(0.png);width: 40px;height: 40px;" onclick="myclick(this)" ></td>
+		<td style="background-image:url(0.png);width: 40px;height: 40px;" onclick="myclick(this)" ></td>
+	</tr>	
+</table>
+
+</body>
+</html>

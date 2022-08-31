@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+function myclick(){
+	
+	var dan = $("#mysel option:selected").val();
+	var idan = parseInt(dan);
+	console.log("dan",dan,idan);
+	
+	var txt = "";
+	
+	for(var i=1;i<=9;i++){
+		txt += idan+"*"+i+"="+(i*idan)+"\n";
+	}
+	
+	$("#myta").val(txt);
+}
+$(document).ready(function(){
+	$('#btn').bind("click" , myclick);
+});
+
+
+</script>
+
+</head>
+<body>
+<table border="1px">
+	<tr>
+		<td>단수:</td>
+		<td>
+			<select id="mysel">
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+			</select>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2" >
+			<input type="button" value="출력하기" id="btn" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" >
+			<textarea id="myta" rows="10" cols="10"></textarea>
+		</td>
+	</tr>
+	
+
+</table>
+</body>
+</html>

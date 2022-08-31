@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+function myajax(){
+	var param = "";
+	param += "dummy=" + Math.random();
+	param += "&stone="+1;
+	param += "&data400="+1111;
+	$.ajax({
+		url : "ajax",
+		data : param,
+		dataType : "json",
+		type : "post",
+		async: false,
+		success : function(res) {
+			console.log(res);
+		}
+	});
+}
+
+</script>
+</head>
+<body>
+<a href="javascript:myajax()" >보내기</a>
+</body>
+</html>
